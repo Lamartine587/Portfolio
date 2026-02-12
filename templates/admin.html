@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard | Lamartine Kipkoech</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body { background: #0f172a; color: #e2e8f0; font-family: 'Segoe UI', sans-serif; padding: 20px; max-width: 900px; margin: 0 auto; }
+        .header { display: flex; justify-content: space-between; border-bottom: 1px solid #334155; padding-bottom: 20px; margin-bottom: 20px; }
+        .btn { padding: 8px 15px; border-radius: 5px; text-decoration: none; font-weight: bold; display: inline-block; color: white; transition: 0.3s; font-size: 0.85rem; }
+        .bg-green { background: #10b981; }
+        .bg-blue { background: #3b82f6; }
+        .bg-red { background: #ef4444; }
+        .btn:hover { opacity: 0.8; transform: translateY(-1px); }
+        
+        h2 { margin: 30px 0 15px 0; color: #fff; border-left: 4px solid #10b981; padding-left: 10px; }
+        
+        .card { background: #1e293b; padding: 15px; margin-bottom: 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #334155; }
+        .project-info { display: flex; align-items: center; }
+        .actions { display: flex; gap: 8px; }
+
+        /* INQUIRY TABLE STYLES */
+        .table-container { background: #1e293b; border-radius: 10px; overflow: hidden; border: 1px solid #334155; margin-top: 10px; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th { background: #334155; padding: 12px; font-size: 0.9rem; color: #94a3b8; }
+        td { padding: 12px; border-bottom: 1px solid #334155; font-size: 0.85rem; vertical-align: top; }
+        tr:hover { background: rgba(255,255,255,0.02); }
+        .msg-text { color: #94a3b8; font-style: italic; max-width: 350px; word-wrap: break-word; }
+        .timestamp { color: #64748b; font-size: 0.75rem; display: block; margin-top: 4px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Admin Dashboard</h1>
+        <div>
+            <span><i class="fas fa-user-shield"></i> Welcome, {{ name }}</span> | 
+            <a href="/logout" style="color: #94a3b8; text-decoration: none;">Logout</a>
+        </div>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+        <a href="/admin/add" class="btn bg-green"><i class="fas fa-plus"></i> Add New Project</a>
+        <a href="/" class="btn" style="background: #334155; margin-left: 10px;"><i class="fas fa-external-link-alt"></i> View Live Site</a>
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+          <div style="padding: 12px; background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; color: #10b981; border-radius: 5px; margin-bottom: 20px;">
+              <i class="fas fa-info-circle"></i> {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <h2><i class="fas fa-tasks"></i> Manage Projects</h2>
+    
+    {% for project in projects %}
+    <div class="card">
+        <div class="project-info">
+            <i class="{{ project.icon }}" style="color: {{ project.color }}; width: 25px;"></i>
+            <div style="margin-left: 10px;">
+                <strong>{{ project.title }}</strong>
+                <span style="color: #94a3b8; font-size: 0.8rem; margin-left: 10px;">{{ project.status }}</span>
+                {% if project.github_link %}
+                    <a href="{{ project.github_link }}" target="_blank" style="color: #fff; margin-left: 10px;" title="GitHub Link"><i class="fab fa-github"></i></a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="actions">
+            <a href="/admin/edit/{{ project.id }}" class="btn bg-blue">
+                <i class="fas fa-edit"></i> Edit
+            </a>
+            <a href="/admin/delete/{{ project.id }}" class="btn bg-red" onclick="return confirm('Delete this project?');">
+                <i class="fas fa-trash"></i> Delete
+            </a>
+        </div>
+    </div>
+    {% else %}
+    <p style="text-align: center; color: var(--text-muted); padding: 20px;">No projects found. Add one to get started!</p>
+    {% endfor %}
+
+    <h2><i class="fas fa-envelope-open-text"></i> Recent Inquiries</h2>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Sender Info</th>
+                    <th>Message</th>
+                    <th>Date Received</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for inquiry in inquiries %}
+                <tr>
+                    <td>
+                        <strong>{{ inquiry.name }}</strong><br>
+                        <a href="mailto:{{ inquiry.email }}" style="color: #3b82f6; text-decoration: none;">{{ inquiry.email }}</a>
+                    </td>
+                    <td class="msg-text">{{ inquiry.message }}</td>
+                    <td>
+                        <span class="timestamp">{{ inquiry.timestamp.strftime('%Y-%m-%d %H:%M') }}</span>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="3" style="text-align: center; color: #94a3b8; padding: 30px;">
+                        No messages received yet.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Project</title>
+    <style>
+        body { background: #0f172a; color: #e2e8f0; font-family: sans-serif; padding: 20px; display: flex; justify-content: center; }
+        .box { background: #1e293b; padding: 30px; border-radius: 10px; width: 100%; max-width: 500px; border: 1px solid #334155; }
+        input, select, textarea { width: 100%; padding: 10px; margin: 10px 0; background: #334155; border: none; color: white; border-radius: 5px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: #10b981; border: none; color: white; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        label { color: #94a3b8; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h2>Add New Project</h2>
+        <form method="POST">
+            <label>Title</label>
+            <input type="text" name="title" required>
+
+            <label>Description</label>
+            <textarea name="description" rows="4" required></textarea>
+
+            <label>GitHub Repository URL (Optional)</label>
+            <input type="url" name="github_link" placeholder="https://github.com/yourname/project">
+
+            <label>Icon (FontAwesome Class)</label>
+            <input type="text" name="icon" value="fas fa-code">
+
+            <label>Color</label>
+            <input type="color" name="color" value="#10b981" style="height: 40px;">
+
+            <label>Status</label>
+            <select name="status">
+                <option value="In Progress">In Progress</option>
+                <option value="Planning">Planning</option>
+                <option value="Completed">Completed</option>
+            </select>
+
+            <button type="submit">Save Project</button>
+        </form>
+        <br>
+        <a href="/admin" style="color: #94a3b8; text-decoration: none;">Cancel</a>
+    </div>
+</body>
+</html>

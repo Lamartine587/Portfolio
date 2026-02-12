@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Project</title>
+    <style>
+        body { background: #0f172a; color: #e2e8f0; font-family: sans-serif; padding: 20px; display: flex; justify-content: center; }
+        .box { background: #1e293b; padding: 30px; border-radius: 10px; width: 100%; max-width: 500px; border: 1px solid #334155; }
+        input, select, textarea { width: 100%; padding: 10px; margin: 10px 0; background: #334155; border: none; color: white; border-radius: 5px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: #3b82f6; border: none; color: white; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        label { color: #94a3b8; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h2>Edit Project: {{ project.title }}</h2>
+        <form method="POST">
+            <label>Title</label>
+            <input type="text" name="title" value="{{ project.title }}" required>
+
+            <label>Description</label>
+            <textarea name="description" rows="4" required>{{ project.description }}</textarea>
+
+            <label>GitHub Repository URL (Optional)</label>
+            <input type="url" name="github_link" value="{{ project.github_link or '' }}" placeholder="https://github.com/yourname/project">
+
+            <label>Icon (FontAwesome Class)</label>
+            <input type="text" name="icon" value="{{ project.icon }}">
+
+            <label>Color</label>
+            <input type="color" name="color" value="{{ project.color }}" style="height: 40px;">
+
+            <label>Status</label>
+            <select name="status">
+                <option value="In Progress" {% if project.status == 'In Progress' %}selected{% endif %}>In Progress</option>
+                <option value="Planning" {% if project.status == 'Planning' %}selected{% endif %}>Planning</option>
+                <option value="Completed" {% if project.status == 'Completed' %}selected{% endif %}>Completed</option>
+            </select>
+
+            <button type="submit">Update Project</button>
+        </form>
+        <br>
+        <a href="/admin" style="color: #94a3b8; text-decoration: none;">Cancel</a>
+    </div>
+</body>
+</html>
