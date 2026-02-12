@@ -1,7 +1,8 @@
 Flask
 Flask-SQLAlchemy
 Flask-Login
-psycopg2
+psycopg2-binary
 python-dotenv
 Werkzeug
 Flask_Mail
+gunicorn
